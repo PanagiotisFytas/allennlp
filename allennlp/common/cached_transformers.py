@@ -2,6 +2,7 @@ import logging
 from typing import NamedTuple, Optional, Dict, Tuple
 import transformers
 from transformers import AutoModel
+from allennlp.cxrbert.modeling_cxrbert import CXRBertModel
 from allennlp.cxrbert.configuration_cxrbert import CXRBertTokenizer
 
 
@@ -79,7 +80,10 @@ def get(
 
             transformer = AutoModel.from_pretrained(model_name, state_dict=override_weights)
         else:
-            transformer = AutoModel.from_pretrained(model_name)
+            if CXRBERT:
+                transformer = CXRBertModel.from_pretrained(model_name, trust_remote_code=True)
+            else:
+                transformer = AutoModel.from_pretrained(model_name)
         _model_cache[spec] = transformer
     if make_copy:
         import copy
