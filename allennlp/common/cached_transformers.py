@@ -2,7 +2,10 @@ import logging
 from typing import NamedTuple, Optional, Dict, Tuple
 import transformers
 from transformers import AutoModel
+from allennlp.cxrbert.configuration_cxrbert import CXRBertTokenizer
 
+
+CXRBERT = True
 
 logger = logging.getLogger(__name__)
 
@@ -95,6 +98,10 @@ def get_tokenizer(model_name: str, **kwargs) -> transformers.PreTrainedTokenizer
     global _tokenizer_cache
     tokenizer = _tokenizer_cache.get(cache_key, None)
     if tokenizer is None:
-        tokenizer = transformers.AutoTokenizer.from_pretrained(model_name, trust_remote_code=True, **kwargs)
+        if CXRBERT:
+            tokenizer = CXRBertTokenizer.from_pretrained(model_name, trust_remote_code=True, **kwargs)
+        else:
+            tokenizer = transformers.BertTokenizer.from_pretrained(model_name, **kwargs)
         _tokenizer_cache[cache_key] = tokenizer
     return tokenizer
+
