@@ -16,12 +16,12 @@ class CXRBertConfig(BertConfig):
 
     model_type = "cxr-bert"
 
-    def __init__(self, projection_size: int = 128, **kwargs: Any) -> None:
+    def __init__(self, projection_size: int = 128, use_return_dict=True, **kwargs: Any) -> None:
         super().__init__(**kwargs)
         self.projection_size = projection_size
+        self.use_return_dict = use_return_dict
 
 
 class CXRBertTokenizer(BertTokenizer):
-    def __init__(self, use_return_dict=True, **kwargs: Any) -> None:
+    def __init__(self,  **kwargs: Any) -> None:
         super().__init__(**kwargs)
-        self.use_return_dict = use_return_dict
