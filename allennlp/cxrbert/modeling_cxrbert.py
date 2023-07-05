@@ -10,7 +10,6 @@ import torch.nn.functional as F
 from torch import nn
 from torch import Tensor as T
 from transformers import BertForMaskedLM
-from transformers.modeling_outputs import ModelOutput
 
 from .configuration_cxrbert import CXRBertConfig
 
