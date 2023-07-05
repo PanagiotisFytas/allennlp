@@ -88,22 +88,26 @@ class CXRBertModel(BertForMaskedLM):
                                                     head_mask=head_mask,
                                                     inputs_embeds=inputs_embeds,
                                                     output_attentions=output_attentions,
-                                                    output_hidden_states=True,
+                                                    output_hidden_states=(output_hidden_states or
+                                                                          output_cls_projected_embedding),
                                                     )
                                                     # return_dict=True)
-        print("out ", len(bert_for_masked_lm_output))
-        predictions_scores = bert_for_masked_lm_output[0]
-        print("scores ", predictions_scores.shape)
-        hidden_states = bert_for_masked_lm_output[1]
-        print("hidden ", len(hidden_states))
-        print("out hidden ", output_hidden_states)
-        if output_attentions:
-            attentions = bert_for_masked_lm_output[2]
-            print("att ", len(attentions))
-        raise Exception(len(bert_for_masked_lm_output))
+        # print("out ", len(bert_for_masked_lm_output))
+        # predictions_scores = bert_for_masked_lm_output[0]
+        # print("scores ", predictions_scores.shape)
+        # if output_hidden_states:
+        #     hidden_states = bert_for_masked_lm_output[1]
+        # print("hidden ", len(hidden_states))
+        # print("out hidden ", output_hidden_states)
+        # if output_attentions:
+        #     attentions = bert_for_masked_lm_output[2]
+        #     print("att ", len(attentions))
+        # raise Exception(len(bert_for_masked_lm_output))
 
-        last_hidden_state = hidden_states[-1]
-        cls_projected_embedding = self.cls_projection_head(last_hidden_state[:, 0, :]) if output_cls_projected_embedding else None
+        if output_hidden_states or output_cls_projected_embedding:
+            hidden_states = bert_for_masked_lm_output.hidden_states
+            last_hidden_state = hidden_states[-1]
+            cls_projected_embedding = self.cls_projection_head(last_hidden_state[:, 0, :]) if output_cls_projected_embedding else None
 
         # if return_dict:
         #     return CXRBertOutput(
