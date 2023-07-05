@@ -22,5 +22,6 @@ class CXRBertConfig(BertConfig):
 
 
 class CXRBertTokenizer(BertTokenizer):
-    def __init__(self, **kwargs: Any) -> None:
+    def __init__(self, use_return_dict=True, **kwargs: Any) -> None:
         super().__init__(**kwargs)
+        self.use_return_dict = use_return_dict
