@@ -88,65 +88,66 @@ class CXRBertModel(BertForMaskedLM):
                                                     head_mask=head_mask,
                                                     inputs_embeds=inputs_embeds,
                                                     output_attentions=output_attentions,
-                                                    output_hidden_states=(output_hidden_states or
-                                                                          output_cls_projected_embedding),
+                                                    output_hidden_states=True,
                                                     )
-                                                    # return_dict=True)
-        # print("out ", len(bert_for_masked_lm_output))
-        # predictions_scores = bert_for_masked_lm_output[0]
-        # print("scores ", predictions_scores.shape)
-        # if output_hidden_states:
-        #     hidden_states = bert_for_masked_lm_output[1]
-        # print("hidden ", len(hidden_states))
-        # print("out hidden ", output_hidden_states)
-        # if output_attentions:
-        #     attentions = bert_for_masked_lm_output[2]
-        #     print("att ", len(attentions))
-        # raise Exception(len(bert_for_masked_lm_output))
-
-        if output_hidden_states or output_cls_projected_embedding:
-            hidden_states = bert_for_masked_lm_output.hidden_states
-            last_hidden_state = hidden_states[-1]
-            cls_projected_embedding = self.cls_projection_head(last_hidden_state[:, 0, :]) if output_cls_projected_embedding else None
-
-        # if return_dict:
-        #     return CXRBertOutput(
-        #         last_hidden_state=last_hidden_state,
-        #         logits=bert_for_masked_lm_output.logits,
-        #         cls_projected_embedding=cls_projected_embedding,
-        #         hidden_states=bert_for_masked_lm_output.hidden_states if output_hidden_states else None,
-        #         attentions=bert_for_masked_lm_output.attentions,
-        #     )
+        # returns the last hidden states
+        return bert_for_masked_lm_output[1][-1]
+        #                                             # return_dict=True)
+        # # print("out ", len(bert_for_masked_lm_output))
+        # # predictions_scores = bert_for_masked_lm_output[0]
+        # # print("scores ", predictions_scores.shape)
+        # # if output_hidden_states:
+        # #     hidden_states = bert_for_masked_lm_output[1]
+        # # print("hidden ", len(hidden_states))
+        # # print("out hidden ", output_hidden_states)
+        # # if output_attentions:
+        # #     attentions = bert_for_masked_lm_output[2]
+        # #     print("att ", len(attentions))
+        # # raise Exception(len(bert_for_masked_lm_output))
+        #
+        # if output_hidden_states or output_cls_projected_embedding:
+        #     hidden_states = bert_for_masked_lm_output.hidden_states
+        #     last_hidden_state = hidden_states[-1]
+        #     cls_projected_embedding = self.cls_projection_head(last_hidden_state[:, 0, :]) if output_cls_projected_embedding else None
+        #
+        # # if return_dict:
+        # #     return CXRBertOutput(
+        # #         last_hidden_state=last_hidden_state,
+        # #         logits=bert_for_masked_lm_output.logits,
+        # #         cls_projected_embedding=cls_projected_embedding,
+        # #         hidden_states=bert_for_masked_lm_output.hidden_states if output_hidden_states else None,
+        # #         attentions=bert_for_masked_lm_output.attentions,
+        # #     )
+        # # else:
+        # #     return (
+        # #         last_hidden_state,
+        # #         bert_for_masked_lm_output.logits,
+        # #         cls_projected_embedding,
+        # #         bert_for_masked_lm_output.hidden_states,
+        # #         bert_for_masked_lm_output.attentions,)
+        # if not output_hidden_states:
+        #     if not output_attentions:
+        #         if not output_cls_projected_embedding:
+        #             return bert_for_masked_lm_output[0]
+        #         else:
+        #             return bert_for_masked_lm_output[0], cls_projected_embedding
+        #     else:
+        #         if not output_cls_projected_embedding:
+        #             return bert_for_masked_lm_output[0], bert_for_masked_lm_output[2]
+        #         else:
+        #             return bert_for_masked_lm_output[0], bert_for_masked_lm_output[2], cls_projected_embedding
         # else:
-        #     return (
-        #         last_hidden_state,
-        #         bert_for_masked_lm_output.logits,
-        #         cls_projected_embedding,
-        #         bert_for_masked_lm_output.hidden_states,
-        #         bert_for_masked_lm_output.attentions,)
-        if not output_hidden_states:
-            if not output_attentions:
-                if not output_cls_projected_embedding:
-                    return bert_for_masked_lm_output[0]
-                else:
-                    return bert_for_masked_lm_output[0], cls_projected_embedding
-            else:
-                if not output_cls_projected_embedding:
-                    return bert_for_masked_lm_output[0], bert_for_masked_lm_output[2]
-                else:
-                    return bert_for_masked_lm_output[0], bert_for_masked_lm_output[2], cls_projected_embedding
-        else:
-            if not output_attentions:
-                if not output_cls_projected_embedding:
-                    return bert_for_masked_lm_output[0], bert_for_masked_lm_output[1]
-                else:
-                    return bert_for_masked_lm_output[0], bert_for_masked_lm_output[1], cls_projected_embedding
-            else:
-                if not output_cls_projected_embedding:
-                    return bert_for_masked_lm_output[0], bert_for_masked_lm_output[1], bert_for_masked_lm_output[2]
-                else:
-                    return bert_for_masked_lm_output[0], bert_for_masked_lm_output[1], bert_for_masked_lm_output[2],\
-                        cls_projected_embedding
+        #     if not output_attentions:
+        #         if not output_cls_projected_embedding:
+        #             return bert_for_masked_lm_output[0], bert_for_masked_lm_output[1]
+        #         else:
+        #             return bert_for_masked_lm_output[0], bert_for_masked_lm_output[1], cls_projected_embedding
+        #     else:
+        #         if not output_cls_projected_embedding:
+        #             return bert_for_masked_lm_output[0], bert_for_masked_lm_output[1], bert_for_masked_lm_output[2]
+        #         else:
+        #             return bert_for_masked_lm_output[0], bert_for_masked_lm_output[1], bert_for_masked_lm_output[2],\
+        #                 cls_projected_embedding
 
     def get_projected_text_embeddings(self, input_ids: torch.Tensor, attention_mask: torch.Tensor) -> torch.Tensor:
         """
