@@ -80,7 +80,7 @@ class CXRBertModel(BertForMaskedLM):
     ) -> Union[BERTTupleOutput, CXRBertOutput]:
 
         return_dict = return_dict if return_dict is not None else self.config.use_return_dict
-
+        raise Exception("kwargs: {}".format(kwargs))
         bert_for_masked_lm_output = super().forward(input_ids=input_ids,
                                                     attention_mask=attention_mask,
                                                     token_type_ids=token_type_ids,
