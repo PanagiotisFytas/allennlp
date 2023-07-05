@@ -95,6 +95,6 @@ def get_tokenizer(model_name: str, **kwargs) -> transformers.PreTrainedTokenizer
     global _tokenizer_cache
     tokenizer = _tokenizer_cache.get(cache_key, None)
     if tokenizer is None:
-        tokenizer = transformers.AutoTokenizer.from_pretrained(model_name, **kwargs)
+        tokenizer = transformers.AutoTokenizer.from_pretrained(model_name, trust_remote_code=True, **kwargs)
         _tokenizer_cache[cache_key] = tokenizer
     return tokenizer
