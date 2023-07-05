@@ -81,7 +81,7 @@ def get(
             transformer = AutoModel.from_pretrained(model_name, state_dict=override_weights)
         else:
             if CXRBERT:
-                transformer = CXRBertModel.from_pretrained(model_name, trust_remote_code=True)
+                transformer = CXRBertModel.from_pretrained(model_name)
             else:
                 transformer = AutoModel.from_pretrained(model_name)
         _model_cache[spec] = transformer
